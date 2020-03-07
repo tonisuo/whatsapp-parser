@@ -22,7 +22,7 @@ class WhatsAppParser():
         lines = content.split('\n')
         lines = [l for l in lines if len(l) > 4]
         for line in lines:
-            if (MEDIA_OMITTED_TEXT not in line):
+            if (MEDIA_OMITTED_TEXT not in line and line[0].isdigit()):
         	    self.raw_messages.append(line.encode('utf-8'))
     
     def filter_lines_by_speaker(self):
