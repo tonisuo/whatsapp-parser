@@ -37,7 +37,7 @@ class WhatsAppParser():
             formatted = line[index:]
             self.formatted_speaker_lines.append(formatted)
     
-    def extract_all_messages(self):
+    def _extract_all_messages(self):
         offsetToMessage = 2
         for line in self.raw_messages:
             if(':' in line):
@@ -47,7 +47,7 @@ class WhatsAppParser():
     
     def print_all_messages_formatted(self):
         if not self.formatted_lines:
-            self.extract_all_messages()
+            self._extract_all_messages()
         for line in self.formatted_lines:
             print(line)
     
