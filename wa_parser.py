@@ -7,7 +7,7 @@ class WhatsAppParser():
     def __init__(self, inputFilePath, speakerName):
         if not inputFilePath:
             raise ValueError('Empty file path not allowed')
-        self.speakerName = speakerName
+        self.specifiedSpeakerName = speakerName
         self.inputFilePath = inputFilePath
         self.raw_messages = []
         self.formatted_speaker_lines = []
@@ -26,14 +26,14 @@ class WhatsAppParser():
         	    self.raw_messages.append(line.encode('utf-8'))
     
     def filter_lines_by_speaker(self):
-        speakerLines = list(filter(lambda line: self.speakerName+':' in line, self.raw_messages))
+        speakerLines = list(filter(lambda line: self.specifiedSpeakerName+':' in line, self.raw_messages))
         return speakerLines
 
     def extract_speakers_words(self, lines):
-        speakerNameLength = len(self.speakerName)
+        speakerNameLength = len(self.specifiedSpeakerName)
         offsetToMessage = 2
         for line in lines:
-            index = line.find(self.speakerName+':') + speakerNameLength + offsetToMessage
+            index = line.find(self.specifiedSpeakerName+':') + speakerNameLength + offsetToMessage
             formatted = line[index:]
             self.formatted_speaker_lines.append(formatted)
     
@@ -51,7 +51,7 @@ class WhatsAppParser():
         for line in self.formatted_lines:
             print(line)
     
-    def get_speakers(self):
+    def _set_speakers(self):
         offsetFromPartition = 2
         for line in self.raw_messages:
             if(':' in line):
@@ -62,7 +62,7 @@ class WhatsAppParser():
     
     def print_speakers(self):
         if not self.speakers:
-            self.get_speakers()
+            self._set_speakers()
         print(self.speakers)
 
     def write_speakers_lines_to_file_newLine(self, outputFileName):
